@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ${{ matrix.operating-system }}
+    environment: ci
 
     strategy:
       fail-fast: false
@@ -31,3 +32,7 @@ jobs:
 
       - name: Jest Tests
         run: yarn test
+        env:
+          OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+          OPEN_AI_EMAIL: ${{ secrets.OPEN_AI_EMAIL }}
+          OPEN_AI_PASSWORD: ${{ secrets.OPEN_AI_PASSWORD }}
