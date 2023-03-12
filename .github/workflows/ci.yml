@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        node-version: [ 18.x, 19.x ]
+
+    name: Node.js ${{ matrix.node-version }} Test on ${{ matrix.operating-system }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: yarn install --immutable --inline-builds
+
+      - name: Run ESLint
+        run: yarn lint
+
+      - name: Jest Tests
+        run: yarn test
